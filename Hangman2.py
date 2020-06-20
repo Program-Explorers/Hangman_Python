@@ -86,13 +86,10 @@ def hangman_gui(guesses):
         return True
 
 
-
-
 def print_dashes(word, list_word, guessed_letter, missed_let):
-    if guessed_letter.lower() not in word and guessed_letter.upper() not in word:
-        missed_let.append(guessed_letter)
-        print(' '.join(list_word))
-        return
+    # if guessed_letter.lower() not in word and guessed_letter.upper() not in word:
+    #   missed_let.append(guessed_letter)
+    #  return
 
     for num_char, char in enumerate(word):
         if char == guessed_letter.lower() or char == guessed_letter.upper():
@@ -100,6 +97,8 @@ def print_dashes(word, list_word, guessed_letter, missed_let):
             print("GOOD GUESS")
 
     print(' '.join(list_word))
+
+    return
 
 
 def guessed_word(list_word, word):
@@ -162,11 +161,10 @@ def main():
     movie_keys = list(movies.keys())
     video_game_keys = list(video_games.keys())
     famous_company_keys = list(famous_companies.keys())
-    guessed_let = ''
+    guessed_let = ';'
 
     while game_on:
-        x = 0
-        word_guess = False
+
         rand_int = random.randrange(0, 5)
 
         greeting()
@@ -191,17 +189,15 @@ def main():
             list_word.append('_')
 
         while True:
-            num_char = len_word(word)
+            num_char = len_word(word)  # gets length of the word without spaces
 
-            x = hangman_gui(len(missed_letters))
+            hangman_gui(len(
+                missed_letters))  # prints the hangman picture and returns true if the user has made more than 6 guesses
             print_dashes(word, list_word, guessed_let, missed_letters)
+            num_of_wrong_guess = len(missed_letters)
             print('\nMissed letters: ' + ' '.join(missed_letters))
-            guess_str(num_char)
-            guessed_let = guess_letter()
 
-            word_guess = guessed_word(list_word, word)
-
-            if x:
+            if num_of_wrong_guess == 6:
 
                 print('Sorry you lost. ')
                 game_yes = game_replay()
@@ -213,6 +209,14 @@ def main():
                 else:
                     print('Thank You for playing!')
                     return
+
+            guess_str(num_char)
+            guessed_let = guess_letter()
+
+            word_guess = guessed_word(list_word, word)
+
+            if guessed_let.lower() not in word and guessed_let.upper() not in word and guessed_let != ';':
+                missed_letters.append(guessed_let)
 
             for character in missed_letters:
                 print(character + ' ', sep=' ', end='', flush=True)
@@ -250,6 +254,7 @@ def main():
                 else:
                     print('Thank You for playing!')
                     return
+
 
 if __name__ == "__main__":
     main()
