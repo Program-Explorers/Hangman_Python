@@ -2,11 +2,12 @@ import random
 
 
 def greeting():
-    print('\n' * 50)
+    print('\n' * 20)
     print("Welcome to our Hangman game!\nYou will be playing against a computer.\n\n")
 
 
 def dic_choice():
+    print('\n' * 20)
     try:
         choice = int(input(
             "Would you like to play\n 1. Locations\n 2. Movies\n 3. Video Games\n 4. Famous Companies\n\nType 1  2  3  "
@@ -29,7 +30,7 @@ def hangman_gui(guesses):
         print("|")
         print("|")
         print("|________")
-        return False
+
     elif guesses == 1:
         print("_________")
         print("|	 |")
@@ -38,7 +39,7 @@ def hangman_gui(guesses):
         print("|")
         print("|")
         print("|________")
-        return False
+
     elif guesses == 2:
         print("_________")
         print("|	 |")
@@ -47,7 +48,7 @@ def hangman_gui(guesses):
         print("|	 |")
         print("|")
         print("|________")
-        return False
+
     elif guesses == 3:
         print("_________")
         print("|	 |")
@@ -56,7 +57,7 @@ def hangman_gui(guesses):
         print("|	 |")
         print("|")
         print("|________")
-        return False
+
     elif guesses == 4:
         print("_________")
         print("|	 |")
@@ -65,7 +66,7 @@ def hangman_gui(guesses):
         print("|	 |")
         print("|")
         print("|________")
-        return False
+
     elif guesses == 5:
         print("_________")
         print("|	 |")
@@ -74,7 +75,7 @@ def hangman_gui(guesses):
         print("|	 |")
         print("|	/ ")
         print("|________")
-        return False
+
     elif guesses == 6:
         print("_________")
         print("|	 |")
@@ -83,31 +84,16 @@ def hangman_gui(guesses):
         print("|	 |")
         print("|	/ \ ")
         print("|________")
-        return True
 
 
 def print_dashes(word, list_word, guessed_letter, missed_let):
-    # if guessed_letter.lower() not in word and guessed_letter.upper() not in word:
-    #   missed_let.append(guessed_letter)
-    #  return
-
     for num_char, char in enumerate(word):
         if char == guessed_letter.lower() or char == guessed_letter.upper():
             list_word[num_char] = char
             print("GOOD GUESS")
 
     print(' '.join(list_word))
-
     return
-
-
-def guessed_word(list_word, word):
-    list_of_word = list(word)
-
-    if list_of_word == list_word:
-        return True
-
-    return False
 
 
 def len_word(word):
@@ -149,6 +135,13 @@ def game_replay():
         return False
 
 
+def did_win(user_word, real_word):
+    if user_word == real_word:
+        return True
+
+    return False
+
+
 def main():
     missed_letters = []
     game_on = True
@@ -188,6 +181,8 @@ def main():
                 continue
             list_word.append('_')
 
+        list_of_word = list(word)  # a list of the characters of the word
+
         while True:
             num_char = len_word(word)  # gets length of the word without spaces
 
@@ -196,6 +191,48 @@ def main():
             print_dashes(word, list_word, guessed_let, missed_letters)
             num_of_wrong_guess = len(missed_letters)
             print('\nMissed letters: ' + ' '.join(missed_letters))
+            did_user_win = did_win(list_of_word,
+                                   list_word)  # sees if the dash words is equal to the original word and stores in var
+
+            if did_user_win:
+
+                print('\nYou GUESSED the word! Great job.')
+                game_yes = game_replay()
+
+                if game_yes:
+                    print('Lets play again!')
+                    guessed_let = ''
+                    missed_letters = []
+                    list_word = []
+
+                    rand_int = random.randrange(0, 5)
+                    user_choice = dic_choice()
+
+                    if user_choice == 1:
+                        word = location_keys[rand_int]
+
+                    elif user_choice == 2:
+                        word = movie_keys[rand_int]
+
+                    elif user_choice == 3:
+                        word = video_game_keys[rand_int]
+
+                    else:
+                        word = famous_company_keys[rand_int]
+
+                    for char in word:
+                        if char == ' ':
+                            list_word.append(' ')
+
+                        else:
+                            list_word.append('_')
+
+                    list_of_word = list(word)
+                    continue
+
+                else:
+                    print('Thank you for playing')
+                    return
 
             if num_of_wrong_guess == 6:
 
@@ -213,47 +250,11 @@ def main():
             guess_str(num_char)
             guessed_let = guess_letter()
 
-            word_guess = guessed_word(list_word, word)
-
             if guessed_let.lower() not in word and guessed_let.upper() not in word and guessed_let != ';':
                 missed_letters.append(guessed_let)
 
             for character in missed_letters:
                 print(character + ' ', sep=' ', end='', flush=True)
-
-            if word_guess:
-                print('\nYou guessed the word! Great job')
-                game_yes = game_replay()
-
-                if game_yes:
-                    print('Lets play again!')
-
-                    missed_letters = []
-                    rand_int = random.randrange(0, 5)
-                    user_choice = dic_choice()
-                    if user_choice == 1:
-                        word = location_keys[rand_int]
-
-                    elif user_choice == 2:
-                        word = movie_keys[rand_int]
-
-                    elif user_choice == 3:
-                        word = video_game_keys[rand_int]
-
-                    else:
-                        word = famous_company_keys[rand_int]
-
-                    list_word = []
-                    for chr in word:
-                        if chr == ' ':
-                            list_word.append(' ')
-                            continue
-                        list_word.append('_')
-                    continue
-
-                else:
-                    print('Thank You for playing!')
-                    return
 
 
 if __name__ == "__main__":
