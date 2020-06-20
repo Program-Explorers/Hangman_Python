@@ -20,6 +20,7 @@ def dic_choice():
 
 
 def hangman_gui(guesses):
+    print('\n' * 20)
     if guesses == 0:
         print("_________")
         print("|	 |")
@@ -28,6 +29,7 @@ def hangman_gui(guesses):
         print("|")
         print("|")
         print("|________")
+        return False
     elif guesses == 1:
         print("_________")
         print("|	 |")
@@ -36,6 +38,7 @@ def hangman_gui(guesses):
         print("|")
         print("|")
         print("|________")
+        return False
     elif guesses == 2:
         print("_________")
         print("|	 |")
@@ -44,6 +47,7 @@ def hangman_gui(guesses):
         print("|	 |")
         print("|")
         print("|________")
+        return False
     elif guesses == 3:
         print("_________")
         print("|	 |")
@@ -52,6 +56,7 @@ def hangman_gui(guesses):
         print("|	 |")
         print("|")
         print("|________")
+        return False
     elif guesses == 4:
         print("_________")
         print("|	 |")
@@ -60,6 +65,7 @@ def hangman_gui(guesses):
         print("|	 |")
         print("|")
         print("|________")
+        return False
     elif guesses == 5:
         print("_________")
         print("|	 |")
@@ -68,6 +74,7 @@ def hangman_gui(guesses):
         print("|	 |")
         print("|	/ ")
         print("|________")
+        return False
     elif guesses == 6:
         print("_________")
         print("|	 |")
@@ -78,7 +85,7 @@ def hangman_gui(guesses):
         print("|________")
         return True
 
-    return False
+
 
 
 def print_dashes(word, list_word, guessed_letter, missed_let):
@@ -184,9 +191,34 @@ def main():
             list_word.append('_')
 
         while True:
+            num_char = len_word(word)
+
+            x = hangman_gui(len(missed_letters))
+            print_dashes(word, list_word, guessed_let, missed_letters)
+            print('\nMissed letters: ' + ' '.join(missed_letters))
+            guess_str(num_char)
+            guessed_let = guess_letter()
+
+            word_guess = guessed_word(list_word, word)
+
+            if x:
+
+                print('Sorry you lost. ')
+                game_yes = game_replay()
+
+                if game_yes:
+                    print('Lets play again!')
+                    continue
+
+                else:
+                    print('Thank You for playing!')
+                    return
+
+            for character in missed_letters:
+                print(character + ' ', sep=' ', end='', flush=True)
 
             if word_guess:
-                print('\nYou guessed the word!')
+                print('\nYou guessed the word! Great job')
                 game_yes = game_replay()
 
                 if game_yes:
@@ -218,36 +250,6 @@ def main():
                 else:
                     print('Thank You for playing!')
                     return
-
-            if x != 0:
-                print('\n')
-                print('Wrong letters guessed: ')
-
-                if x > 6:
-                    print('Sorry you lost. ')
-                    game_yes = game_replay()
-
-                    if game_yes:
-                        print('Lets play again!')
-                        continue
-
-                    else:
-                        print('Thank You for playing!')
-                        return
-
-                for character in missed_letters:
-                    print(character + ' ', sep=' ', end='', flush=True)
-
-            guesses = len(missed_letters)
-            x = hangman_gui(guesses)
-
-            print_dashes(word, list_word, guessed_let, missed_letters)
-            num_char = len_word(word)
-            print('\nMissed letters: ' + ' '.join(missed_letters))
-            word_guess = guessed_word(list_word, word)
-            guess_str(num_char)
-            guessed_let = guess_letter()
-
 
 if __name__ == "__main__":
     main()
