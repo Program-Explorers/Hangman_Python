@@ -3,11 +3,12 @@ import random
 
 def greeting():
     print('\n' * 20)
-    print("Welcome to our Hangman game!\nYou will be playing against a computer.\n\n")
+    print("Welcome to our Hangman game!\nYou will be playing against a computer.\n")
+    print('Type word to guess the whole word')
 
 
 def dic_choice():
-    print('\n' * 20)
+    print('\n')
     try:
         choice = int(input(
             "Would you like to play\n 1. Locations\n 2. Movies\n 3. Video Games\n 4. Famous Companies\n\nType 1  2  3  "
@@ -21,7 +22,7 @@ def dic_choice():
 
 
 def hangman_gui(guesses):
-    print('\n' * 20)
+    print('\n' * 10)
     if guesses == 0:
         print("_________")
         print("|	 |")
@@ -123,7 +124,9 @@ def guess_letter():
         letter = letter.lower()
 
         if letter == 'word':
-            print('word!!!')
+            return letter
+
+        elif letter == 'hint':
             return letter
 
         elif letter.isalpha():
@@ -157,11 +160,18 @@ def ask_word():
     return user_word.lower()
 
 
-def hint():
-    pass
+def give_hint(list_of_word, list_word):
+    while True:
+        random_let = random.choice(list_of_word)
+
+        index = list_of_word.index(random_let)
+        if list_word[index] != random_let:
+            list_word[index] = random_let
+            break
 
 
 def main():
+    num_hints = 0
     missed_letters = []
     game_on = True
     locations = {"Paris": 5, "Brussels": 8, "London": 6, "Chicago": 7, "New York City": 11}
@@ -317,6 +327,17 @@ def main():
                     print(is_word)
                     missed_letters.append(is_word)
                     continue
+
+            elif guessed_let == 'hint':
+
+                print(num_hints)
+                if num_hints == 3:
+                    print('Sorry you have used all of your 3 hints.')
+
+                else:
+                    num_hints += 1
+                    give_hint(list_of_word, list_word)
+                    print(num_hints)
 
             else:
 
