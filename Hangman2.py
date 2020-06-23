@@ -3,15 +3,15 @@ import random
 
 def greeting():
     print('\n' * 20)
-    print("Welcome to our Hangman game!\nYou will be playing against a computer.\n")
+    print("Welcome to our Hangman game!")
     print('Type word to guess the whole word')
+    print('Type hint to get a letter')
 
 
 def dic_choice():
-    print('\n')
     try:
         choice = int(input(
-            "Would you like to play\n 1. Locations\n 2. Movies\n 3. Video Games\n 4. Famous Companies\n\nType 1  2  3  "
+            "\nWould you like to play\n 1. Locations\n 2. Movies\n 3. Video Games\n 4. Famous Companies\n\nType 1  2  3  "
             "4: "))
 
     except:
@@ -233,7 +233,7 @@ def main():
                     guessed_let = ''
                     missed_letters = []
                     list_word = []
-
+                    num_hints = 0
                     rand_int = random.randrange(0, 5)
                     user_choice = dic_choice()
 
@@ -289,11 +289,13 @@ def main():
 
                     if game_yes:
                         print('Lets play again!')
+                        print('\n' * 10)
                         guessed_let = ''
                         missed_letters = []
                         list_word = []
-
+                        num_hints = 0
                         rand_int = random.randrange(0, 5)
+
                         user_choice = dic_choice()
 
                         if user_choice == 1:
@@ -319,7 +321,7 @@ def main():
                         continue
 
                     else:
-                        print('Thank you for playing')
+                        print('Thank you for playing\n')
                         return
 
                 else:
