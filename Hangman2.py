@@ -87,13 +87,17 @@ def hangman_gui(guesses):
 
 
 def print_dashes(word, list_word, guessed_letter, missed_let):
+    check_values = 0
+
     for num_char, char in enumerate(word):
         if char == guessed_letter.lower() or char == guessed_letter.upper():
+            check_values += 1
             list_word[num_char] = char
-            print("GOOD GUESS")
+
+    if check_values >= 1:
+        print('GOOD GUESS')
 
     print(' '.join(list_word))
-    return
 
 
 def len_word(word):
@@ -117,7 +121,12 @@ def guess_letter():
     while True:
         letter = input('Type in a letter: ')
         letter = letter.lower()
-        if letter.isalpha():
+
+        if letter == 'word':
+            print('word!!!')
+            return letter
+
+        elif letter.isalpha():
             return letter
 
         else:
@@ -140,6 +149,16 @@ def did_win(user_word, real_word):
         return True
 
     return False
+
+
+def ask_word():
+    user_word = input('Type in the whole word: ')
+
+    return user_word.lower()
+
+
+def hint():
+    pass
 
 
 def main():
@@ -250,11 +269,62 @@ def main():
             guess_str(num_char)
             guessed_let = guess_letter()
 
-            if guessed_let.lower() not in word and guessed_let.upper() not in word and guessed_let != ';':
-                missed_letters.append(guessed_let)
+            if guessed_let == 'word':
 
-            for character in missed_letters:
-                print(character + ' ', sep=' ', end='', flush=True)
+                is_word = ask_word()
+
+                if is_word.lower() == word.lower():
+                    print('\nYou GUESSED the word! Great job.')
+                    game_yes = game_replay()
+
+                    if game_yes:
+                        print('Lets play again!')
+                        guessed_let = ''
+                        missed_letters = []
+                        list_word = []
+
+                        rand_int = random.randrange(0, 5)
+                        user_choice = dic_choice()
+
+                        if user_choice == 1:
+                            word = location_keys[rand_int]
+
+                        elif user_choice == 2:
+                            word = movie_keys[rand_int]
+
+                        elif user_choice == 3:
+                            word = video_game_keys[rand_int]
+
+                        else:
+                            word = famous_company_keys[rand_int]
+
+                        for char in word:
+                            if char == ' ':
+                                list_word.append(' ')
+
+                            else:
+                                list_word.append('_')
+
+                        list_of_word = list(word)
+                        continue
+
+                    else:
+                        print('Thank you for playing')
+                        return
+
+                else:
+                    print(missed_letters)
+                    print(is_word)
+                    missed_letters.append(is_word)
+                    continue
+
+            else:
+
+                if guessed_let.lower() not in word and guessed_let.upper() not in word and guessed_let != ';':
+                    missed_letters.append(guessed_let)
+
+                for character in missed_letters:
+                    print(character + ' ', sep=' ', end='', flush=True)
 
 
 if __name__ == "__main__":
